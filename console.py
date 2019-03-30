@@ -38,11 +38,54 @@ class HBNBCommand(cmd.Cmd):
             SyntaxError: when there is no args given
             NameError: when there is no object taht has the name
         """
+        my_stuff = {}
         try:
             if not line:
                 raise SyntaxError()
             my_list = line.split(" ")
+            print(my_list)
+            for ele in my_list[1:]:
+                ke = ele.split("=", 1)
+                if len(ke) != 2:
+                    continue
+                print(ke)
+                if "\"" in ke[1]:
+                    ke[1] = str(ke[1])
+                elif ke[1].isdigit():
+                    ke[1] = int(ke[1])
+                else:
+                    try:
+                        ke[1] = float(ke[1])
+                    except:
+                        """ fix later """
+                        print("none apply") 
+                        continue
+                print("{}: {}".format(type(ke[1]), ke[1]))
+
+                my_stuff[ke[0]] = ke[1]
+
+                """ 
+                validate the value for datatype
+                        validate string:
+                            starts w/ double quote
+                            no spaces allowed
+                            all _ is replaced with spaces
+                        validate float:
+                            contains a .
+                if everything is clear - add to dictionary
+
+                after loop eval dictionary to create
+                """
+            
+
+            print(my_stuff)
+                    
             obj = eval("{}()".format(my_list[0]))
+            print("dict:{}".format(obj.__dict__))
+            obj.__dict__ = dict(obj.__dict__, **my_stuff)
+            print("new dict:{}".format(obj.__dict__))
+
+                    
             obj.save()
             print("{}".format(obj.id))
         except SyntaxError:
