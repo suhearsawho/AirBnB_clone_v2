@@ -45,47 +45,46 @@ class HBNBCommand(cmd.Cmd):
             my_list = line.split(" ")
             print(my_list)
             for ele in my_list[1:]:
-                ke = ele.split("=", 1)
-                if len(ke) != 2:
+                entry = ele.split("=", 1)
+                if len(entry) != 2:
                     continue
-                print(ke)
-                if "\"" in ke[1]:
-                    ke[1] = str(ke[1])
-                elif ke[1].isdigit():
-                    ke[1] = int(ke[1])
+                print(entry)
+                end_string = False
+                if "\"" == entry[1][0]:
+                    final_word = ''
+                    for i in range(1, len(entry[1])):
+                        if entry[1][i] == '"':
+                            if i >= 0 and entry[1][i - 1] != '\\':
+                                end_string = True
+                                break
+                            else:
+                                final_word = final_word.replace('\\', '')
+                        final_word += entry[1][i]
+                    if (end_string is not False or (len(final_word[1]) > 1 and
+                                                    final_word[:-1] == '"' and
+                                                    final_word[:-2] == '\\'))
+                    continue
+                    entry[1] = final_word
+                elif entry[1].isdigit():
+                    entry[1] = int(entry[1])
                 else:
                     try:
-                        ke[1] = float(ke[1])
+                        entry[1] = float(entry[1])
                     except:
                         """ fix later """
-                        print("none apply") 
+                        print("none apply")
                         continue
-                print("{}: {}".format(type(ke[1]), ke[1]))
+                print("{}: {}".format(type(entry[1]), entry[1]))
 
-                my_stuff[ke[0]] = ke[1]
-
-                """ 
-                validate the value for datatype
-                        validate string:
-                            starts w/ double quote
-                            no spaces allowed
-                            all _ is replaced with spaces
-                        validate float:
-                            contains a .
-                if everything is clear - add to dictionary
-
-                after loop eval dictionary to create
-                """
-            
+                my_stuff[entry[0]] = entry[1]
 
             print(my_stuff)
-                    
+
             obj = eval("{}()".format(my_list[0]))
             print("dict:{}".format(obj.__dict__))
             obj.__dict__ = dict(obj.__dict__, **my_stuff)
             print("new dict:{}".format(obj.__dict__))
 
-                    
             obj.save()
             print("{}".format(obj.id))
         except SyntaxError:
