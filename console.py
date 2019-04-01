@@ -51,23 +51,31 @@ class HBNBCommand(cmd.Cmd):
                 print(entry)
                 end_string = False
                 if "\"" == entry[1][0]:
+                    # String case
                     final_word = ''
                     for i in range(1, len(entry[1])):
                         if entry[1][i] == '"':
+                            # Only delete backslash character if it is
+                            # Followed by a double quote.
                             if i >= 0 and entry[1][i - 1] != '\\':
                                 end_string = True
                                 break
                             else:
-                                final_word = final_word.replace('\\', '')
-                        final_word += entry[1][i]
-                    if (end_string is not False or (len(final_word[1]) > 1 and
-                                                    final_word[:-1] == '"' and
-                                                    final_word[:-2] == '\\'))
-                    continue
-                    entry[1] = final_word
+                                final_word = final_word[:-1]
+                        if entry[1][i] == '_':
+                            final_word += ' '
+                        else:
+                            final_word += entry[1][i]
+                    if (end_string is False or (len(final_word[1]) > 1 and
+                                                final_word[:-1] == '"' and
+                                                final_word[:-2] == '\\')):
+                        continue
+                    entry[1] = str(final_word)
                 elif entry[1].isdigit():
+                    # Integer Case
                     entry[1] = int(entry[1])
                 else:
+                    # Float or invalid
                     try:
                         entry[1] = float(entry[1])
                     except:
