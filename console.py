@@ -43,50 +43,47 @@ class HBNBCommand(cmd.Cmd):
             if not line:
                 raise SyntaxError()
             my_list = line.split(" ")
-            print(my_list)
             for ele in my_list[1:]:
                 entry = ele.split("=", 1)
                 if len(entry) != 2:
                     continue
-                print(entry)
                 end_string = False
-                if "\"" == entry[1][0]:
+                if "\"" == entry[1][0] and len(entry[1]) > 1:
+                    # String case
                     final_word = ''
                     for i in range(1, len(entry[1])):
                         if entry[1][i] == '"':
+                            # Only delete backslash character if it is
+                            # Followed by a double quote.
                             if i >= 0 and entry[1][i - 1] != '\\':
                                 end_string = True
                                 break
                             else:
-                                final_word = final_word.replace('\\', '')
-                        final_word += entry[1][i]
-                    if (end_string is not False or (len(final_word[1]) > 1 and
-                                                    final_word[:-1] == '"' and
-                                                    final_word[:-2] == '\\'))
-                    continue
-                    entry[1] = final_word
+                                final_word = final_word[:-1]
+                        if entry[1][i] == '_':
+                            final_word += ' '
+                        else:
+                            final_word += entry[1][i]
+                    if end_string is False:
+                        continue
+                    entry[1] = str(final_word)
                 elif entry[1].isdigit():
+                    # Integer Case
                     entry[1] = int(entry[1])
                 else:
+                    # Float or invalid
                     try:
                         entry[1] = float(entry[1])
                     except:
                         """ fix later """
-                        print("none apply")
                         continue
-                print("{}: {}".format(type(entry[1]), entry[1]))
 
                 my_stuff[entry[0]] = entry[1]
 
-            print(my_stuff)
-
             obj = eval("{}()".format(my_list[0]))
-            print("dict:{}".format(obj.__dict__))
             obj.__dict__ = dict(obj.__dict__, **my_stuff)
-            print("new dict:{}".format(obj.__dict__))
 
             obj.save()
-            print("{}".format(obj.id))
         except SyntaxError:
             print("** class name missing **")
         except NameError:

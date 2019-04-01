@@ -20,12 +20,21 @@ class FileStorage:
     __file_path = "file.json"
     __objects = {}
 
-    def all(self):
-        """returns a dictionary
+    def all(self, cls=None):
+        """returns a dictionary, and if cls is given, return all objects of that
+        class type
         Return:
             returns a dictionary of __object
         """
-        return self.__objects
+        if cls is None:
+            return self.__objects
+        else:
+            new_dict = {}
+            for k, v in self.__objects.items():
+                split = k.split(".")
+                if split[0] == cls:
+                    new_dict[k] = v
+            return new_dict
 
     def new(self, obj):
         """sets __object to given obj
@@ -55,3 +64,14 @@ class FileStorage:
                     self.__objects[key] = value
         except FileNotFoundError:
             pass
+
+    def delete(self, obj=None):
+        if obj:
+            try:
+                key = obj.__class__.__name__ + "." + str(obj.id)
+                del self.__objects[key]
+                self.save()
+            except:
+                pass
+
+    """ should i save the new updated objects? """
