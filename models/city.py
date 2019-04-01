@@ -5,7 +5,7 @@ from models.base_model import BaseModel, Base
 from sqlalchemy import Column, Integer, String, ForeignKey
 
 
-class City(BaseModel, Base):
+class City(BaseModel):
     """This is the class for City
     Attributes:
         state_id: column for state id (foreign key)
