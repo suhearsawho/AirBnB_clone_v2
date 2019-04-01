@@ -52,6 +52,15 @@ class TestFileStorage(unittest.TestCase):
         self.assertEqual(type(obj), dict)
         self.assertIs(obj, storage._FileStorage__objects)
 
+    def test_all_class(self):
+        """tests if all will return specified class objects in File Storage"""
+        storage = FileStorage()
+        obj = storage.all(User)
+        self.assertIsNotNone(obj)
+        self.assertEqual(type(obj), dict)
+        self.assertIsNot(obj, {})
+        self.assertIsNot(obj, storage._FileStorage__objects)
+
     def test_new(self):
         """test when new is created"""
         storage = FileStorage()
