@@ -64,6 +64,14 @@ class TestBaseModel(unittest.TestCase):
         self.assertIsInstance(base_dict['created_at'], str)
         self.assertIsInstance(base_dict['updated_at'], str)
 
+    def test_delete(self):
+        """ Test the new delete method to delete the current instance """
+        base_dict = self.base.to_dict()
+        self.base.save()
+        print(base_dict)
+        self.base.delete()
+        self.storage
+        print(base_dict)
 
 if __name__ == "__main__":
     unittest.main()

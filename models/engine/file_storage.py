@@ -69,7 +69,10 @@ class FileStorage:
         if obj:
             try:
                 key = obj.__class__.__name__ + "." + str(obj.id)
+                print(key)
                 del self.__objects[key]
+                print("deleting")
+                print(self.__objects[key])
                 self.save()
             except:
                 pass
