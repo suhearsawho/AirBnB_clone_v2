@@ -1,9 +1,12 @@
 #!/usr/bin/python3
 """test for file storage"""
 import unittest
+from unittest.mock import patch
+from io import StringIO
 import pep8
 import json
 import os
+from console import HBNBCommand
 from models.base_model import BaseModel
 from models.user import User
 from models.state import State
@@ -25,11 +28,13 @@ class TestFileStorage(unittest.TestCase):
         cls.user.last_name = "Yo"
         cls.user.email = "1234@yahoo.com"
         cls.storage = FileStorage()
+        cls.console = HBNBCommand()
 
     @classmethod
     def teardown(cls):
         """at the end of the test this will tear it down"""
         del cls.user
+        del cls.console
 
     def tearDown(self):
         """teardown"""
@@ -37,6 +42,17 @@ class TestFileStorage(unittest.TestCase):
             os.remove("file.json")
         except Exception:
             pass
+
+    @staticmethod
+    def remove_all():
+        """Function to remove all items from storage"""
+        storage = FileStorage()
+        objects = storage.all()
+        objects = list(objects.values())
+
+        for element in objects:
+            storage.delete(element)
+        objects = storage.all()
 
     def test_pep8_FileStorage(self):
         """Tests pep8 style"""
@@ -89,7 +105,6 @@ class TestFileStorage(unittest.TestCase):
         key = usr.__class__.__name__ + "." + str(usr.id)
         self.assertFalse(key in obj_dict.keys())
 
-
     def test_reload_filestorage(self):
         """
         tests reload
@@ -117,6 +132,73 @@ class TestFileStorage(unittest.TestCase):
             for line in r:
                 self.assertEqual(line, "{}")
         self.assertIs(self.storage.reload(), None)
+
+    def test_create_valid_str(self):
+        """Tests do_create method in console when given valid str input"""
+        storage = FileStorage()
+        tests = ['new', 'new\\\"', '\\\"', 'My_little_house', '""']
+        expected = ['new', 'new"', '"', 'My little house', '']
+
+        for i in range(len(tests)):
+            self.remove_all()
+            self.console.onecmd(
+                'create BaseModel test_var="{}"'.format(tests[i]))
+            attributes = list(storage.all().values())
+            actual = attributes[0].test_var
+            self.assertEqual(expected[i], actual)
+            self.assertEqual(str, type(actual))
+
+    def test_create_invalid_str(self):
+        """Tests that variable is not created when given invalid str input"""
+        storage = FileStorage()
+        tests = ['"', 'Hi "', '"Hi', '\"']
+
+        for test in tests:
+            self.remove_all()
+            self.console.onecmd('create BaseModel test_var={}'.format(test))
+            attributes = list(storage.all().values())
+            self.assertFalse('test_var' in attributes[0].to_dict())
+
+    def test_create_valid_int(self):
+        """Tests do_create method in console when given valid integer input"""
+        storage = FileStorage()
+        tests = [9, 12, 10000]
+        expected = [9, 12, 10000]
+
+        for i in range(len(tests)):
+            self.remove_all()
+            self.console.onecmd(
+                'create BaseModel test_var={}'.format(tests[i]))
+            attributes = list(storage.all().values())
+            actual = attributes[0].test_var
+            self.assertEqual(expected[i], actual)
+            self.assertEqual(int, type(actual))
+
+    def test_create_invalid_int(self):
+        """Tests do_create method in console when given invalid integers"""
+        storage = FileStorage()
+        tests = ['9.a', '90ab10', '90.b1']
+
+        for test in tests:
+            self.remove_all()
+            self.console.onecmd('create BaseModel test_var={}'.format(test))
+            attributes = list(storage.all().values())
+            self.assertFalse('test_var' in attributes[0].to_dict())
+
+    def test_create_valid_float(self):
+        """Tests do_create method in console when given valid float values"""
+        storage = FileStorage()
+        tests = [9.124, 90.24, 90.0, 90.]
+        expected = [9.124, 90.24, 90.0, 90.0]
+
+        for i in range(len(tests)):
+            self.remove_all()
+            self.console.onecmd(
+                'create BaseModel test_var={}'.format(tests[i]))
+            attributes = list(storage.all().values())
+            actual = attributes[0].test_var
+            self.assertEqual(expected[i], actual)
+            self.assertEqual(float, type(actual))
 
 
 if __name__ == "__main__":
