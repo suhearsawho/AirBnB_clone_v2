@@ -141,8 +141,9 @@ class TestFileStorage(unittest.TestCase):
 
         for i in range(len(tests)):
             self.remove_all()
-            self.console.onecmd(
-                'create BaseModel test_var="{}"'.format(tests[i]))
+            with patch('sys.stdout', new=StringIO()) as f:
+                self.console.onecmd(
+                    'create BaseModel test_var="{}"'.format(tests[i]))
             attributes = list(storage.all().values())
             actual = attributes[0].test_var
             self.assertEqual(expected[i], actual)
@@ -155,7 +156,9 @@ class TestFileStorage(unittest.TestCase):
 
         for test in tests:
             self.remove_all()
-            self.console.onecmd('create BaseModel test_var={}'.format(test))
+            with patch('sys.stdout', new=StringIO()) as f:
+                self.console.onecmd(
+                    'create BaseModel test_var={}'.format(test))
             attributes = list(storage.all().values())
             self.assertFalse('test_var' in attributes[0].to_dict())
 
@@ -167,8 +170,9 @@ class TestFileStorage(unittest.TestCase):
 
         for i in range(len(tests)):
             self.remove_all()
-            self.console.onecmd(
-                'create BaseModel test_var={}'.format(tests[i]))
+            with patch('sys.stdout', new=StringIO()) as f:
+                self.console.onecmd(
+                    'create BaseModel test_var={}'.format(tests[i]))
             attributes = list(storage.all().values())
             actual = attributes[0].test_var
             self.assertEqual(expected[i], actual)
@@ -181,7 +185,9 @@ class TestFileStorage(unittest.TestCase):
 
         for test in tests:
             self.remove_all()
-            self.console.onecmd('create BaseModel test_var={}'.format(test))
+            with patch('sys.stdout', new=StringIO()) as f:
+                self.console.onecmd(
+                    'create BaseModel test_var={}'.format(test))
             attributes = list(storage.all().values())
             self.assertFalse('test_var' in attributes[0].to_dict())
 
@@ -193,8 +199,9 @@ class TestFileStorage(unittest.TestCase):
 
         for i in range(len(tests)):
             self.remove_all()
-            self.console.onecmd(
-                'create BaseModel test_var={}'.format(tests[i]))
+            with patch('sys.stdout', new=StringIO()) as f:
+                self.console.onecmd(
+                    'create BaseModel test_var={}'.format(tests[i]))
             attributes = list(storage.all().values())
             actual = attributes[0].test_var
             self.assertEqual(expected[i], actual)
