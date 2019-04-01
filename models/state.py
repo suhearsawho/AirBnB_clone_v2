@@ -3,6 +3,7 @@
 import sqlalchemy
 from models.base_model import BaseModel, Base
 from sqlalchemy import Column, Integer, String, ForeignKey
+from sqlalchemy.orm import relationship
 
 
 class State(BaseModel, Base):
@@ -15,4 +16,4 @@ class State(BaseModel, Base):
     name = Column(String(128), nullable=False)
     name = ""
 
-    cities = relationship("City", cascade="all,delete", backref="state")
+#    cities = relationship("City", cascade="all,delete", backref="state")
