@@ -84,6 +84,7 @@ class HBNBCommand(cmd.Cmd):
             obj.__dict__ = dict(obj.__dict__, **my_stuff)
 
             obj.save()
+            print(obj.id)
         except SyntaxError:
             print("** class name missing **")
         except NameError:
