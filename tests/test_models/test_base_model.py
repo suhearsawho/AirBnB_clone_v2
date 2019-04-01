@@ -3,6 +3,8 @@
 import unittest
 import os
 from models.base_model import BaseModel
+from models.engine.file_storage import FileStorage
+
 import pep8
 
 
@@ -66,12 +68,10 @@ class TestBaseModel(unittest.TestCase):
 
     def test_delete(self):
         """ Test the new delete method to delete the current instance """
-        base_dict = self.base.to_dict()
+        storage = FileStorage()
         self.base.save()
-        print(base_dict)
         self.base.delete()
-        self.storage
-        print(base_dict)
+
 
 if __name__ == "__main__":
     unittest.main()
