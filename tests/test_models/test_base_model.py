@@ -69,9 +69,12 @@ class TestBaseModel(unittest.TestCase):
     def test_delete(self):
         """ Test the new delete method to delete the current instance """
         storage = FileStorage()
+        objs = storage.all()
+        key = self.base.__class__.__name__ + "." + str(self.base.id)
         self.base.save()
         self.base.delete()
-
+        with self.assertRaises(KeyError):
+            objs[key]
 
 if __name__ == "__main__":
     unittest.main()
