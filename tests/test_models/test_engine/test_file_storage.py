@@ -136,8 +136,8 @@ class TestFileStorage(unittest.TestCase):
     def test_create_valid_str(self):
         """Tests do_create method in console when given valid str input"""
         storage = FileStorage()
-        tests = ['new', 'new\\\"', '\\\"', 'My_little_house', '""']
-        expected = ['new', 'new"', '"', 'My little house', '']
+        tests = ['new', 'new\\\"', '\\\"', 'My_little_house', '""', '____']
+        expected = ['new', 'new"', '"', 'My little house', '', '    ']
 
         for i in range(len(tests)):
             self.remove_all()
