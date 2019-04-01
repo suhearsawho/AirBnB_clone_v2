@@ -61,6 +61,12 @@ class TestFileStorage(unittest.TestCase):
         self.assertIsNot(obj, {})
         self.assertIsNot(obj, storage._FileStorage__objects)
 
+    def test_all_unknown_class(self):
+        """ tests for invalid classes when calling all """
+        storage = FileStorage()
+        with self.assertRaises(NameError):
+            storage.all(dog)
+
     def test_new(self):
         """test when new is created"""
         storage = FileStorage()
@@ -71,6 +77,18 @@ class TestFileStorage(unittest.TestCase):
         storage.new(user)
         key = user.__class__.__name__ + "." + str(user.id)
         self.assertIsNotNone(obj[key])
+
+    def test_delete(self):
+        """ Tests delete method to delete objects in __object """
+        storage = FileStorage()
+        obj_dict = storage.all()
+        usr = User()
+        usr.id = 12345
+        storage.new(usr)
+        storage.delete(usr)
+        key = usr.__class__.__name__ + "." + str(usr.id)
+        self.assertFalse(key in obj_dict.keys())
+
 
     def test_reload_filestorage(self):
         """
