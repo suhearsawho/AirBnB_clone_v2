@@ -66,7 +66,12 @@ class FileStorage:
             pass
 
     def delete(self, obj=None):
-        old_dict = self.all()
         if obj:
-            self.__objects = {k: v for k, v in old_dict.items() if v != obj}
+            try:
+                key = obj.__class__.__name__ + "." + str(obj.id)
+                del self.__objects[key]
+                self.save()
+            except:
+                pass
+
     """ should i save the new updated objects? """
