@@ -1,18 +1,19 @@
 #!/usr/bin/python3
 """This is the place class"""
 from models.base_model import BaseModel, Base
-from sqlalchemy import String, Column, Integer, ForeignKey, Float
-form sqlalchemy.orm import relationship
+from sqlalchemy import String, Column, Integer, ForeignKey, Float, Table
+from sqlalchemy.orm import relationship
 from os import environ
 
 
-place_amenity= Table(
-        'place_amenity', Base.metadata,
-        Column('place_id', ForeignKey('places.id'),
-            String(60), nullable=False, primary_key=True),
-        Column('amenity_id', ForeignKey('amenities.id'),
-            String(60), nullable=False, primary_key=True)
-        )
+place_amenity = Table('place_amenity', Base.metadata,
+                      Column('place_id', String(60), ForeignKey('places.id'),
+                             nullable=False, primary_key=True),
+                      Column('amenity_id', String(60),
+                             ForeignKey('amenities.id'),
+                             nullable=False, primary_key=True)
+                      )
+
 
 class Place(BaseModel, Base):
     """This is the class for Place
@@ -43,16 +44,27 @@ class Place(BaseModel, Base):
     latitude = Column(Float, nullable=True)
     longitude = Column(Float, nullable=True)
     amenity_ids = []
+    amenities = relationship(
+        'Amenity', secondary=place_amenity, viewonly=False)
+    reviews = relationship('Review', cascade='all, delete', backref='place')
 
     @property
     def reviews(self):
-        reviews = storage.all(self)
-        rev_li = [ review for review in reviews if review.place_id == self.id ]
-        return rev_li
+        from models import Review
+        reviews = storage.all(Review)
+        self.__reviews = [
+            review for review in reviews if review.place_id == self.id]
+        return self.__reviews
 
-    if 'HBNB_TYPE_STORAGE' in environ and\
-            environ['HBNB_TYPE_STORAGE'] == 'db':
-                amenties = relationship('Amenity', secondary='place_amenity',
-                        viewonly=False)
-    else:
-        return self.reviews()
+    @property
+    def amenities(self):
+        from models import Amenity
+        amenities = storage.all(Amenity)
+        self.__amenities = [amenity for amenity in amenities
+                            if amenity.place_id == self.id]
+        return self.__amenities
+
+    @amenities.setter
+    def amenities(self, obj=None):
+        from models import Amenity
+        pass

@@ -36,7 +36,9 @@ class DBStorage():
                 self.__engine.execute(table.delete())
 
     def all(self, cls=None):
-        """Performs a query on the current database session"""
+        """Performs a query on the current database session
+           cls is an object, not a string.
+        """
         object_types = [User, State, City, Amenity, Place, Review]
         object_dict = {}
 

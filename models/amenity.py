@@ -2,11 +2,12 @@
 """This is the amenity class"""
 import sqlalchemy
 from models.base_model import BaseModel, Base
-from sqlalchemy import Column, Integer, ForeignKey, String
 from models.place import place_amenity
+from sqlalchemy import Column, Integer, ForeignKey, String
+from sqlalchemy.orm import relationship
 
 
-class Amenity(BaseModel):
+class Amenity(BaseModel, Base):
     """This is the class for Amenity
     Attributes:
         name: input name
