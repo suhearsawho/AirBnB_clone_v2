@@ -22,13 +22,13 @@ class DBStorage():
 
     def __init__(self):
         """Defines setup for DBStorage"""
-        self.__engine = create_engine('mysql+mysqldb://{}:{}@{}/{}',
+        self.__engine = create_engine('mysql+mysqldb://{}:{}@{}/{}'.format(
                                       environ['HBNB_MYSQL_USER'],
                                       environ['HBNB_MYSQL_PWD'],
                                       environ['HBNB_MYSQL_HOST'],
                                       environ['HBNB_MYSQL_DB'],
-                                      pool_pre_ping=True)
-        if environ['HBNB_ENV'] == 'test':
+                                      pool_pre_ping=True))
+        if 'HBNB_ENV' in environ and environ['HBNB_ENV'] == 'test':
             Session = sessionmaker(bind=self.__engine)
             self.__session = Session()
             for table in reversed(Base.meta.sorted_tables):
