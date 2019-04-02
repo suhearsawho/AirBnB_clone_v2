@@ -50,21 +50,28 @@ class Place(BaseModel, Base):
 
     @property
     def reviews(self):
+        """Getter function for reviews"""
         from models import Review
+        from models import storage
         reviews = storage.all(Review)
-        self.__reviews = [
-            review for review in reviews if review.place_id == self.id]
+        self.__reviews = [review for review in reviews.values()
+                          if review.place_id == self.id]
         return self.__reviews
 
     @property
     def amenities(self):
+        """Getter function for amenities"""
         from models import Amenity
+        from models import storage
         amenities = storage.all(Amenity)
-        self.__amenities = [amenity for amenity in amenities
-                            if amenity.place_id == self.id]
+        self.__amenities = [amenity for amenity in amenities.values()
+                            if amenity.place_amenities.place_id == self.id]
         return self.__amenities
 
     @amenities.setter
     def amenities(self, obj=None):
+        """Setter function for amenities"""
         from models import Amenity
-        pass
+        from models import storage
+        if type(obj) == Amenity:
+            amenity_ids.append(obj.id)
