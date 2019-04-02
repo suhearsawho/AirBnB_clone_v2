@@ -1,8 +1,9 @@
 #!/usr/bin/python3
 """This is the console for AirBnB"""
 import cmd
-from models import storage
+import models
 from datetime import datetime
+from models import storage
 from models.base_model import BaseModel
 from models.user import User
 from models.state import State
@@ -11,6 +12,7 @@ from models.amenity import Amenity
 from models.place import Place
 from models.review import Review
 from shlex import split
+import os
 
 
 class HBNBCommand(cmd.Cmd):
@@ -83,8 +85,15 @@ class HBNBCommand(cmd.Cmd):
             obj = eval("{}()".format(my_list[0]))
             obj.__dict__ = dict(obj.__dict__, **my_stuff)
 
-            obj.save()
+            if os.environ['HBNB_TYPE_STORAGE'] == 'db':
+                models.storage.new(obj)
+                models.storage.save()
+            else:
+                obj.save()
+
             print(obj.id)
+        except Exception as e:
+            print(e)
         except SyntaxError:
             print("** class name missing **")
         except NameError:
@@ -158,24 +167,35 @@ class HBNBCommand(cmd.Cmd):
         Exceptions:
             NameError: when there is no object taht has the name
         """
-        objects = storage.all()
-        my_list = []
-        if not line:
-            for key in objects:
-                my_list.append(objects[key])
+        if os.environ['HBNB_TYPE_STORAGE'] == 'db':
+            if line:
+                types = {'User': User, 'State': State, 'City': City,
+                         'Amenity': Amenity, 'Place': Place, 'Review': Review}
+                objects = models.storage.all(types[line])
+            else:
+                objects = models.storage.all()
+            my_list = [objects[key] for key in objects]
             print(my_list)
-            return
-        try:
-            args = line.split(" ")
-            if args[0] not in self.all_classes:
-                raise NameError()
-            for key in objects:
-                name = key.split('.')
-                if name[0] == args[0]:
+
+        else:
+            objects = storage.all()
+            my_list = []
+            if not line:
+                for key in objects:
                     my_list.append(objects[key])
-            print(my_list)
-        except NameError:
-            print("** class doesn't exist **")
+                print(my_list)
+                return
+            try:
+                args = line.split(" ")
+                if args[0] not in self.all_classes:
+                    raise NameError()
+                for key in objects:
+                    name = key.split('.')
+                    if name[0] == args[0]:
+                        my_list.append(objects[key])
+                print(my_list)
+            except NameError:
+                print("** class doesn't exist **")
 
     def do_update(self, line):
         """Updates an instanceby adding or updating attribute

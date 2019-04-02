@@ -5,7 +5,7 @@ from models.base_model import BaseModel, Base
 from sqlalchemy import Column, Integer, String, ForeignKey
 
 
-class City(BaseModel):
+class City(BaseModel, Base):
     """This is the class for City
     Attributes:
         state_id: column for state id (foreign key)
@@ -15,6 +15,3 @@ class City(BaseModel):
     __tablename__ = 'cities'
     name = Column(String(128), nullable=False)
     state_id = Column(String(60), ForeignKey('states.id'), nullable=False)
-
-    state_id = ""
-    name = ""
