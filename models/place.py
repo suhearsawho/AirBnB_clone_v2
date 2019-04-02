@@ -80,4 +80,3 @@ class Place(BaseModel, Base):
     def prin(self):
         print('hi')
         """
-
