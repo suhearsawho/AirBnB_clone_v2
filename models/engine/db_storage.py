@@ -28,7 +28,7 @@ class DBStorage():
                                       environ['HBNB_MYSQL_HOST'],
                                       environ['HBNB_MYSQL_DB'],
                                       pool_pre_ping=True))
-        if 'HBNB_ENV' in environ and environ['HBNB_ENV'] == 'test':
+        if "HBNB_ENV" in environ and environ['HBNB_ENV'] == 'test':
             Session = sessionmaker(bind=self.__engine)
             self.__session = Session()
             for table in reversed(Base.meta.sorted_tables):
