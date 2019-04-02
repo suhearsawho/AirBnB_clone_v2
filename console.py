@@ -1,6 +1,7 @@
 #!/usr/bin/python3
 """This is the console for AirBnB"""
 import cmd
+import models
 from datetime import datetime
 from models.base_model import BaseModel
 from models.user import User
@@ -10,6 +11,7 @@ from models.amenity import Amenity
 from models.place import Place
 from models.review import Review
 from shlex import split
+import os
 
 
 class HBNBCommand(cmd.Cmd):
@@ -81,9 +83,16 @@ class HBNBCommand(cmd.Cmd):
 
             obj = eval("{}()".format(my_list[0]))
             obj.__dict__ = dict(obj.__dict__, **my_stuff)
-
-            obj.save()
+            
+            if os.environ['HBNB_TYPE_STORAGE'] == 'db':
+                models.db_storage.new(obj)
+                models.db_storage.save()
+            else:
+                obj.save()
+                
             print(obj.id)
+        except Exception as e:
+            print(e)
         except SyntaxError:
             print("** class name missing **")
         except NameError:
