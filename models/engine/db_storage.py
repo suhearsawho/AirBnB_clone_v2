@@ -10,6 +10,7 @@ from models.state import State
 from models.user import User
 from sqlalchemy.orm import sessionmaker, scoped_session
 from sqlalchemy import create_engine
+from sqlalchemy.schema import MetaData
 from os import environ
 
 # TODO When do we close the session? Does the session close?
@@ -28,12 +29,11 @@ class DBStorage():
                                       environ['HBNB_MYSQL_HOST'],
                                       environ['HBNB_MYSQL_DB'],
                                       pool_pre_ping=True))
-        if "HBNB_ENV" in environ and environ['HBNB_ENV'] == 'test':
-            Session = sessionmaker(bind=self.__engine)
-            self.__session = Session()
-            for table in reversed(Base.meta.sorted_tables):
-                engine.execute(tbl.delete())
-            self.__session.close()
+        if 'HBNB_ENV' in environ and environ['HBNB_ENV'] == 'test':
+            meta = MetaData()
+            meta.reflect(bind=self.__engine)
+            for table in reversed(meta.sorted_tables):
+                self.__engine.execute(table.delete())
 
     def all(self, cls=None):
         """Performs a query on the current database session"""
