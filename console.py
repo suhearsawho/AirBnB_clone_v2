@@ -3,6 +3,7 @@
 import cmd
 import models
 from datetime import datetime
+from os import environ
 from models import storage
 from models.base_model import BaseModel
 from models.user import User
@@ -12,7 +13,6 @@ from models.amenity import Amenity
 from models.place import Place
 from models.review import Review
 from shlex import split
-import os
 
 
 class HBNBCommand(cmd.Cmd):
@@ -85,15 +85,14 @@ class HBNBCommand(cmd.Cmd):
             obj = eval("{}()".format(my_list[0]))
             obj.__dict__ = dict(obj.__dict__, **my_stuff)
 
-            if os.environ['HBNB_TYPE_STORAGE'] == 'db':
+            if 'HBNB_TYPE_STORAGE' in environ and\
+                    environ['HBNB_TYPE_STORAGE'] == 'db':
                 models.storage.new(obj)
                 models.storage.save()
             else:
                 obj.save()
 
             print(obj.id)
-        except Exception as e:
-            print(e)
         except SyntaxError:
             print("** class name missing **")
         except NameError:
@@ -167,7 +166,8 @@ class HBNBCommand(cmd.Cmd):
         Exceptions:
             NameError: when there is no object taht has the name
         """
-        if os.environ['HBNB_TYPE_STORAGE'] == 'db':
+        if 'HBNB_TYPE_STORAGE' in environ and\
+                os.environ['HBNB_TYPE_STORAGE'] == 'db':
             if line:
                 types = {'User': User, 'State': State, 'City': City,
                          'Amenity': Amenity, 'Place': Place, 'Review': Review}
