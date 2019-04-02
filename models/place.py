@@ -47,32 +47,37 @@ class Place(BaseModel, Base):
     amenities = relationship(
         'Amenity', secondary=place_amenity, viewonly=False)
     reviews = relationship('Review', cascade='all, delete', backref='place')
-
+"""
     @property
     def reviews(self):
-        """Getter function for reviews"""
         from models import Review
         from models import storage
         reviews = storage.all(Review)
         self.__reviews = [review for review in reviews.values()
                           if review.place_id == self.id]
         return self.__reviews
-
     @property
     def amenities(self):
-        """Getter function for amenities"""
         from models import Amenity
         from models import storage
-        amenities = storage.all(Amenity)
+        amenities = storage.all(place_amenity)
         print(amenities)
+        print(type(amenities))
+        for amenity in amenities.values():
+            print(amenity.place_amenities)
+
         self.__amenities = [amenity for amenity in amenities.values()
                             if amenity.place_amenities.place_id == self.id]
         return self.__amenities
 
     @amenities.setter
     def amenities(self, obj=None):
-        """Setter function for amenities"""
         from models import Amenity
         from models import storage
         if type(obj) == Amenity:
             amenity_ids.append(obj.id)
+
+    def prin(self):
+        print('hi')
+        """
+
