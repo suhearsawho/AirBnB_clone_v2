@@ -3,6 +3,7 @@
 import cmd
 import models
 from datetime import datetime
+from models import storage
 from models.base_model import BaseModel
 from models.user import User
 from models.state import State
@@ -83,13 +84,13 @@ class HBNBCommand(cmd.Cmd):
 
             obj = eval("{}()".format(my_list[0]))
             obj.__dict__ = dict(obj.__dict__, **my_stuff)
-            
+
             if os.environ['HBNB_TYPE_STORAGE'] == 'db':
-                models.db_storage.new(obj)
-                models.db_storage.save()
+                models.storage.new(obj)
+                models.storage.save()
             else:
                 obj.save()
-                
+
             print(obj.id)
         except Exception as e:
             print(e)
@@ -168,9 +169,14 @@ class HBNBCommand(cmd.Cmd):
         """
         if os.environ['HBNB_TYPE_STORAGE'] == 'db':
             if line:
-                models.db_storage.all(line)
+                types = {'User': User, 'State': State, 'City': City,
+                         'Amenity': Amenity, 'Place': Place, 'Review': Review}
+                objects = models.storage.all(types[line])
             else:
-                models.db_storage.all()
+                objects = models.storage.all()
+            my_list = [objects[key] for key in objects]
+            print(my_list)
+
         else:
             objects = storage.all()
             my_list = []
@@ -190,7 +196,6 @@ class HBNBCommand(cmd.Cmd):
                 print(my_list)
             except NameError:
                 print("** class doesn't exist **")
-
 
     def do_update(self, line):
         """Updates an instanceby adding or updating attribute
