@@ -167,7 +167,7 @@ class HBNBCommand(cmd.Cmd):
             NameError: when there is no object taht has the name
         """
         if 'HBNB_TYPE_STORAGE' in environ and\
-                os.environ['HBNB_TYPE_STORAGE'] == 'db':
+                environ['HBNB_TYPE_STORAGE'] == 'db':
             if line:
                 types = {'User': User, 'State': State, 'City': City,
                          'Amenity': Amenity, 'Place': Place, 'Review': Review}
