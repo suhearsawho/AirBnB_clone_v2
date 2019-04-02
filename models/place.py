@@ -64,6 +64,7 @@ class Place(BaseModel, Base):
         from models import Amenity
         from models import storage
         amenities = storage.all(Amenity)
+        print(amenities)
         self.__amenities = [amenity for amenity in amenities.values()
                             if amenity.place_amenities.place_id == self.id]
         return self.__amenities
