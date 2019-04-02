@@ -76,4 +76,5 @@ class BaseModel:
         return my_dict
 
     def delete(self):
+        """Deletes current instance"""
         models.storage.delete(self)
