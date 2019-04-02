@@ -37,19 +37,17 @@ class DBStorage():
 
     def all(self, cls=None):
         """Performs a query on the current database session"""
-        object_types = ['User', 'State', 'City', 'Amenity', 'Place', 'Review']
-
+        object_types = [User, State, City, Amenity, Place, Review]
         object_dict = {}
 
         if cls is None:
             for my_type in object_types:
-                query = self.__session.query(my_type).all()
-                for obj in query:
+                for obj in self.__session.query(my_type).all():
                     key = obj.__class__.__name__ + '.' + obj.id
                     object_dict[key] = obj
         else:
-            query = self.__session.query(cls).all()
-            for obj in query:
+            print("else")
+            for obj in self.__session.query(cls).all():
                 key = obj.__class__.__name__ + '.' + obj.id
                 object_dict[key] = obj
 
@@ -57,6 +55,7 @@ class DBStorage():
 
     def new(self, obj):
         """Adds the object to the current database session"""
+        print(obj.__dict__)
         self.__session.add(obj)
         self.__session.commit()
 
