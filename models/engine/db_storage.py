@@ -54,7 +54,6 @@ class DBStorage():
 
     def new(self, obj):
         """Adds the object to the current database session"""
-        print(obj.__dict__)
         self.__session.add(obj)
         self.__session.commit()
 
