@@ -2,13 +2,14 @@
 """This defines the DBStorage class"""
 import sqlalchemy
 from models.base_model import Base
-from sqlalchemy.orm import sessionmaker
 from models.amenity import Amenity
 from models.city import City
 from models.place import Place
 from models.review import Review
 from models.state import State
 from models.user import User
+from sqlalchemy.orm import sessionmaker
+from sqlalchemy import create_engine
 from os import environ
 
 # TODO When do we close the session? Does the session close?
@@ -22,12 +23,12 @@ class DBStorage():
     def __init__(self):
         """Defines setup for DBStorage"""
         self.__engine = create_engine('mysql+mysqldb://{}:{}@{}/{}',
-                                      environ[HBNB_MYSQL_USER],
-                                      environ[HBNB_MYSQL_PWD],
-                                      environ[HBNB_MYSQL_HOST],
-                                      environ[HBNB_MYSQL_DB],
+                                      environ['HBNB_MYSQL_USER'],
+                                      environ['HBNB_MYSQL_PWD'],
+                                      environ['HBNB_MYSQL_HOST'],
+                                      environ['HBNB_MYSQL_DB'],
                                       pool_pre_ping=True)
-        if environ[HBNB_ENV] == 'test':
+        if environ['HBNB_ENV'] == 'test':
             Session = sessionmaker(bind=self.__engine)
             self.__session = Session()
             for table in reversed(Base.meta.sorted_tables):
