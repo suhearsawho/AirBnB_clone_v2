@@ -31,8 +31,7 @@ class FileStorage:
         else:
             new_dict = {}
             for k, v in self.__objects.items():
-                split = k.split(".")
-                if split[0] == cls:
+                if type(v) == cls:
                     new_dict[k] = v
             return new_dict
 
