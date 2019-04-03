@@ -22,7 +22,7 @@ class FileStorage:
 
     def all(self, cls=None):
         """returns a dictionary, and if cls is given, return all objects of that
-        class type
+        class type in a list.
         Return:
             returns a dictionary of __object
         """
@@ -33,7 +33,8 @@ class FileStorage:
             for k, v in self.__objects.items():
                 if type(v) == cls:
                     new_dict[k] = v
-            return new_dict
+            instance_list = [instance for instance in new_dict.values()]
+            return instance_list
 
     def new(self, obj):
         """sets __object to given obj

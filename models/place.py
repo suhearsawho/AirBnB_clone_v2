@@ -61,7 +61,7 @@ class Place(BaseModel, Base):
             from models import Review
             from models import storage
             reviews = storage.all(Review)
-            self.__reviews = [review for review in reviews.values()
+            self.__reviews = [review for review in reviews
                               if review.place_id == self.id]
             return self.__reviews
 
