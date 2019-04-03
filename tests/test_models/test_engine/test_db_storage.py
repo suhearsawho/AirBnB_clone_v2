@@ -99,12 +99,13 @@ class TestDBStorage(unittest.TestCase):
         self.storage.new(self.user)
         self.storage.save()
         self.storage.delete(self.user)
+        new_len = self.storage.all(User)
         self.assertTrue(original_len == new_len)
 
     @unittest.skipIf('HBNB_TYPE_STORAGE' not in environ or
                      environ['HBNB_TYPE_STORAGE'] != 'db', 'These tests\
                      should only be used when storage type is db')
-    def test_delete(self):
+    def test_reload(self):
         """Tests db_storage delete method"""
         pass
     """def test_reload(self):
