@@ -47,36 +47,39 @@ class Place(BaseModel, Base):
     amenities = relationship(
         'Amenity', secondary=place_amenity, viewonly=False)
     reviews = relationship('Review', cascade='all, delete', backref='place')
-"""
-    @property
-    def reviews(self):
-        from models import Review
-        from models import storage
-        reviews = storage.all(Review)
-        self.__reviews = [review for review in reviews.values()
-                          if review.place_id == self.id]
-        return self.__reviews
-    @property
-    def amenities(self):
-        from models import Amenity
-        from models import storage
-        amenities = storage.all(place_amenity)
-        print(amenities)
-        print(type(amenities))
-        for amenity in amenities.values():
-            print(amenity.place_amenities)
 
-        self.__amenities = [amenity for amenity in amenities.values()
-                            if amenity.place_amenities.place_id == self.id]
-        return self.__amenities
-
-    @amenities.setter
-    def amenities(self, obj=None):
-        from models import Amenity
-        from models import storage
-        if type(obj) == Amenity:
-            amenity_ids.append(obj.id)
-
-    def prin(self):
-        print('hi')
+    if ('HBNB_TYPE_STORAGE' not in environ or
+            environ['HBNB_TYPE_STORAGE'] != 'db'):
+        """Conditional getters and setters for review and amenities
+            Only executed when file storage is being used
         """
+        @property
+        def reviews(self):
+            """Getter for reviews. Returns a list of reviews with
+                matching place id
+            """
+            from models import Review
+            from models import storage
+            reviews = storage.all(Review)
+            self.__reviews = [review for review in reviews.values()
+                              if review.place_id == self.id]
+            return self.__reviews
+
+        @property
+        def amenities(self):
+            """Getter for amenities. Returns a list of amenities with
+                matching place id
+            """
+            from models import Amenity
+            from models import storage
+            return self.amenity_ids
+
+        @amenities.setter
+        def amenities(self, obj=None):
+            """Setter for amenities. Returns a list of amenities with
+                matching place id
+            """
+            from models import Amenity
+            from models import storage
+            if type(obj) == Amenity:
+                amenity_ids.append(obj.id)
