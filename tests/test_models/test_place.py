@@ -3,6 +3,9 @@
 import unittest
 import os
 from models.place import Place
+from models.city import City
+from models.state import State
+from models.amenity import Amenity
 from models.base_model import BaseModel
 import pep8
 
@@ -13,23 +16,22 @@ class TestPlace(unittest.TestCase):
     @classmethod
     def setUpClass(cls):
         """set up for test"""
-        cls.place = Place()
-        cls.place.city_id = "1234-abcd"
-        cls.place.user_id = "4321-dcba"
-        cls.place.name = "Death Star"
-        cls.place.description = "UNLIMITED POWER!!!!!"
-        cls.place.number_rooms = 1000000
-        cls.place.number_bathrooms = 1
-        cls.place.max_guest = 607360
-        cls.place.price_by_night = 10
-        cls.place.latitude = 160.0
-        cls.place.longitude = 120.0
-        cls.place.amenity_ids = ["1324-lksdjkl"]
+        cls.state = State(name="California")
+        cls.city = City(name="Los Angeles", state_id=state.id)
+        cls.amenity = Amenity(name="Television")
+        cls.place = Place(city_id=city.id, state_id=state.id,
+                          amenity_id=amenity.id, name='Death Star',
+                          description='Unlimited power', number_rooms=12,
+                          number_bathrooms=12, max_guest=12, price_by_night=12,
+                          )
 
     @classmethod
     def teardown(cls):
         """at the end of the test this will tear it down"""
         del cls.place
+        del cls.city
+        del cls.amenity
+        del cls.state
 
     def tearDown(self):
         """teardown"""
