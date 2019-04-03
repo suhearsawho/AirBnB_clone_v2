@@ -45,13 +45,11 @@ class DBStorage():
         if cls is None:
             for my_type in object_types:
                 for obj in self.__session.query(my_type).all():
-                    #                    del obj.__dict__['_sa_instance_state']
                     key = obj.__class__.__name__ + '.' + obj.id
                     object_dict[key] = obj
         else:
             for obj in self.__session.query(cls).all():
                 key = obj.__class__.__name__ + '.' + obj.id
-#                del obj.__dict__['_sa_instance_state']
                 object_dict[key] = obj
 
         return object_dict
@@ -75,6 +73,6 @@ class DBStorage():
         """Creates all tables in the database"""
         Base.metadata.create_all(bind=self.__engine)
         session_factory = sessionmaker(
-            bind=self.__engine, expire_on_commit=False)
+            bind=self.__engine, expire_on_commit=False, autoflush=False)
         Session = scoped_session(session_factory)
         self.__session = Session()
