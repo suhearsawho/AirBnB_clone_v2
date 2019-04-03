@@ -82,6 +82,9 @@ class TestDBStorage(unittest.TestCase):
         self.storage.delete(self.user)
         self.assertTrue(original_len == new_len)
 
+    def test_delete(self):
+        """Tests db_storage delete method"""
+        pass
     """def test_reload(self):
     Should we do this?
     Also I think we should delete the commits on both new and delete """

@@ -72,8 +72,8 @@ class TestConsole(unittest.TestCase):
             self.consol.onecmd("quit")
             self.assertEqual('', f.getvalue())
 
-    @unittest.skipIf('HBNB_MYSQL_DB' in os.environ and
-                     os.environ['HBNB_MYSQL_DB'] == 'db', 'User id cannot\
+    @unittest.skipIf('HBNB_TYPE_STORAGE' in os.environ and
+                     os.environ['HBNB_TYPE_STORAGE'] == 'db', 'User id cannot\
                      null')
     def test_create(self):
         """Test create command inpout"""

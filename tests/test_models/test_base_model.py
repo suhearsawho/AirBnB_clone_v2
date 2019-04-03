@@ -44,21 +44,37 @@ class TestBaseModel(unittest.TestCase):
         self.assertIsNotNone(BaseModel.save.__doc__)
         self.assertIsNotNone(BaseModel.to_dict.__doc__)
 
+    @unittest.skipIf('HBNB_TYPE_STORAGE' in os.environ and
+                     os.environ['HBNB_TYPE_STORAGE'] == 'db',
+                     'BaseModel does not inherit from Base. Testing with\
+                     db storage is unnecessary and will cause errors')
     def test_method_BaseModel(self):
         """chekcing if Basemodel have methods"""
         self.assertTrue(hasattr(BaseModel, "__init__"))
         self.assertTrue(hasattr(BaseModel, "save"))
         self.assertTrue(hasattr(BaseModel, "to_dict"))
 
+    @unittest.skipIf('HBNB_TYPE_STORAGE' in os.environ and
+                     os.environ['HBNB_TYPE_STORAGE'] == 'db',
+                     'BaseModel does not inherit from Base. Testing with\
+                     db storage is unnecessary and will cause errors')
     def test_init_BaseModel(self):
         """test if the base is an type BaseModel"""
         self.assertTrue(isinstance(self.base, BaseModel))
 
+    @unittest.skipIf('HBNB_TYPE_STORAGE' in os.environ and
+                     os.environ['HBNB_TYPE_STORAGE'] == 'db',
+                     'BaseModel does not inherit from Base. Testing with\
+                     db storage is unnecessary and will cause errors')
     def test_save_BaesModel(self):
         """test if the save works"""
         self.base.save()
         self.assertNotEqual(self.base.created_at, self.base.updated_at)
 
+    @unittest.skipIf('HBNB_TYPE_STORAGE' in os.environ and
+                     os.environ['HBNB_TYPE_STORAGE'] == 'db',
+                     'BaseModel does not inherit from Base. Testing with\
+                     db storage is unnecessary and will cause errors')
     def test_to_dict_BaseModel(self):
         """test if dictionary works"""
         base_dict = self.base.to_dict()
@@ -66,6 +82,10 @@ class TestBaseModel(unittest.TestCase):
         self.assertIsInstance(base_dict['created_at'], str)
         self.assertIsInstance(base_dict['updated_at'], str)
 
+    @unittest.skipIf('HBNB_TYPE_STORAGE' in os.environ and
+                     os.environ['HBNB_TYPE_STORAGE'] == 'db',
+                     'BaseModel does not inherit from Base. Testing with\
+                     db storage is unnecessary and will cause errors')
     def test_delete(self):
         """ Test the new delete method to delete the current instance """
         storage = FileStorage()
@@ -75,6 +95,7 @@ class TestBaseModel(unittest.TestCase):
         self.base.delete()
         with self.assertRaises(KeyError):
             objs[key]
+
 
 if __name__ == "__main__":
     unittest.main()
