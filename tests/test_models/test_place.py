@@ -6,6 +6,7 @@ from models.place import Place
 from models.city import City
 from models.state import State
 from models.amenity import Amenity
+from models.user import User
 from models.base_model import BaseModel
 import pep8
 
@@ -16,14 +17,29 @@ class TestPlace(unittest.TestCase):
     @classmethod
     def setUpClass(cls):
         """set up for test"""
+        from models import storage
+
         cls.state = State(name="California")
-        cls.city = City(name="Los Angeles", state_id=state.id)
+        cls.city = City(name="Los Angeles", state_id=cls.state.id)
+        cls.user = User(email="john@snow.com", password="johnpwd")
         cls.amenity = Amenity(name="Television")
-        cls.place = Place(city_id=city.id, state_id=state.id,
-                          amenity_id=amenity.id, name='Death Star',
+        cls.place = Place(city_id=cls.city.id, state_id=cls.state.id,
+                          name='Death Star', user_id=cls.user.id,
                           description='Unlimited power', number_rooms=12,
                           number_bathrooms=12, max_guest=12, price_by_night=12,
+                          latitude=10, longitude=12,
                           )
+        if ('HBNB_TYPE_STORAGE' in os.environ and
+                os.environ['HBNB_TYPE_STORAGE'] == 'db'):
+            cls.place.amenities.append(cls.amenity)
+        else:
+            cls.place.amenity_ids = cls.amenity
+
+        storage.new(cls.state)
+        storage.new(cls.city)
+        storage.new(cls.user)
+        storage.new(cls.amenity)
+        storage.new(cls.place)
 
     @classmethod
     def teardown(cls):
@@ -32,6 +48,7 @@ class TestPlace(unittest.TestCase):
         del cls.city
         del cls.amenity
         del cls.state
+        del cls.user
 
     def tearDown(self):
         """teardown"""
