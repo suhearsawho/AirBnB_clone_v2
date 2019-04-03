@@ -30,7 +30,6 @@ class TestPlace(unittest.TestCase):
                           latitude=10.0, longitude=12.0,
                           )
 
-        print(os.environ['HBNB_TYPE_STORAGE'])
         if ('HBNB_TYPE_STORAGE' in os.environ and
                 os.environ['HBNB_TYPE_STORAGE'] == 'db'):
             cls.place.amenities.append(cls.amenity)

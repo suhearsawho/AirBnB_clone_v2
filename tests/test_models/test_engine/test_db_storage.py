@@ -34,6 +34,9 @@ class TestDBStorage(unittest.TestCase):
         """
         pass
 
+    @unittest.skipIf('HBNB_TYPE_STORAGE' not in environ or
+                     environ['HBNB_TYPE_STORAGE'] != 'db', 'These tests\
+                     should only be used when storage type is db')
     def setUp(self):
         """Setup the class"""
         self.user = User()
