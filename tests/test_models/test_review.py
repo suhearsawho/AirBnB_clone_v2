@@ -2,7 +2,12 @@
 """test for review"""
 import unittest
 import os
+from models.amenity import Amenity
+from models.city import City
+from models.place import Place
 from models.review import Review
+from models.state import State
+from models.user import User
 from models.base_model import BaseModel
 import pep8
 
@@ -13,10 +18,24 @@ class TestReview(unittest.TestCase):
     @classmethod
     def setUpClass(cls):
         """set up for test"""
-        cls.rev = Review()
-        cls.rev.place_id = "4321-dcba"
-        cls.rev.user_id = "123-bca"
-        cls.rev.text = "The srongest in the Galaxy"
+        from models import storage
+
+        cls.state = State(name="California")
+        cls.city = City(name="Los Angeles", state_id=cls.state.id)
+        cls.user = User(email="john@snow.com", password="johnpwd")
+        cls.place = Place(city_id=cls.city.id, state_id=cls.state.id,
+                          name='Death Star', user_id=cls.user.id,
+                          description='Unlimited power', number_rooms=12,
+                          number_bathrooms=12, max_guest=12, price_by_night=12,
+                          latitude=10, longitude=12,
+                          )
+        cls.rev = Review(place_id=cls.place.id, user_id=cls.user.id,
+                         text="The strongest in the galaxy")
+        storage.new(cls.state)
+        storage.new(cls.city)
+        storage.new(cls.user)
+        storage.new(cls.place)
+        storage.new(cls.rev)
 
     @classmethod
     def teardown(cls):

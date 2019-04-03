@@ -24,14 +24,18 @@ class TestDBStorage(unittest.TestCase):
     @classmethod
     def setUpClass(cls):
         """set up for test"""
+        """
         environ['HBNB_ENV'] = 'test'
         environ['HBNB_MYSQL_USER'] = 'hbnb_test'
         environ['HBNB_MYSQL_PWD'] = 'hbnb_test_pwd'
         environ['HBNB_MYSQL_HOST'] = 'localhost'
         environ['HBNB_MYSQL_DB'] = 'hbnb_test_db'
         environ['HBNB_TYPE_STORAGE'] = 'db'
+        """
+        pass
 
     def setUp(self):
+        """Setup the class"""
         self.user = User()
         self.user.first_name = "Kev"
         self.user.last_name = "Yo"
@@ -41,13 +45,19 @@ class TestDBStorage(unittest.TestCase):
         self.storage.reload()
 
     def tearDownClass():
+        """
         del environ['HBNB_ENV']
         del environ['HBNB_MYSQL_USER']
         del environ['HBNB_MYSQL_PWD']
         del environ['HBNB_MYSQL_HOST']
         del environ['HBNB_MYSQL_DB']
         del environ['HBNB_TYPE_STORAGE']
+        """
+        pass
 
+    @unittest.skipIf('HBNB_TYPE_STORAGE' not in environ or
+                     environ['HBNB_TYPE_STORAGE'] != 'db', 'These tests\
+                     should only be used when storage type is db')
     def test_all(self):
         """ Tests db_storage all method to query objects in the database
         """
@@ -57,6 +67,9 @@ class TestDBStorage(unittest.TestCase):
         new_len = self.storage.all(User)
         self.assertTrue(original_len != new_len)
 
+    @unittest.skipIf('HBNB_TYPE_STORAGE' not in environ or
+                     environ['HBNB_TYPE_STORAGE'] != 'db', 'These tests\
+                     should only be used when storage type is db')
     def test_new(self):
         """ Tests db_storage new method to add a new object"""
         original_len = self.storage.all(User)
@@ -65,6 +78,9 @@ class TestDBStorage(unittest.TestCase):
         new_len = self.storage.all(User)
         self.assertTrue(original_len != new_len)
 
+    @unittest.skipIf('HBNB_TYPE_STORAGE' not in environ or
+                     environ['HBNB_TYPE_STORAGE'] != 'db', 'These tests\
+                     should only be used when storage type is db')
     def test_save(self):
         """ Tests db_storage save method to save the added object """
         original_len = self.storage.all(User)
@@ -73,15 +89,21 @@ class TestDBStorage(unittest.TestCase):
         new_len = self.storage.all(User)
         self.assertTrue(original_len != new_len)
 
-        def test_delete(self):
-            """ Tests db_storage delete method to delete an object form the db
-            """
+    @unittest.skipIf('HBNB_TYPE_STORAGE' not in environ or
+                     environ['HBNB_TYPE_STORAGE'] != 'db', 'These tests\
+                     should only be used when storage type is db')
+    def test_delete(self):
+        """ Tests db_storage delete method to delete an object form the db
+        """
         original_len = self.storage.all(User)
         self.storage.new(self.user)
         self.storage.save()
         self.storage.delete(self.user)
         self.assertTrue(original_len == new_len)
 
+    @unittest.skipIf('HBNB_TYPE_STORAGE' not in environ or
+                     environ['HBNB_TYPE_STORAGE'] != 'db', 'These tests\
+                     should only be used when storage type is db')
     def test_delete(self):
         """Tests db_storage delete method"""
         pass

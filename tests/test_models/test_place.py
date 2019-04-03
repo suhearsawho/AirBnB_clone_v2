@@ -27,13 +27,15 @@ class TestPlace(unittest.TestCase):
                           name='Death Star', user_id=cls.user.id,
                           description='Unlimited power', number_rooms=12,
                           number_bathrooms=12, max_guest=12, price_by_night=12,
-                          latitude=10, longitude=12,
+                          latitude=10.0, longitude=12.0,
                           )
+
+        print(os.environ['HBNB_TYPE_STORAGE'])
         if ('HBNB_TYPE_STORAGE' in os.environ and
                 os.environ['HBNB_TYPE_STORAGE'] == 'db'):
             cls.place.amenities.append(cls.amenity)
         else:
-            cls.place.amenity_ids = cls.amenity
+            cls.place.amenities = cls.amenity
 
         storage.new(cls.state)
         storage.new(cls.city)
@@ -82,7 +84,6 @@ class TestPlace(unittest.TestCase):
         self.assertTrue('price_by_night' in self.place.__dict__)
         self.assertTrue('latitude' in self.place.__dict__)
         self.assertTrue('longitude' in self.place.__dict__)
-        self.assertTrue('amenity_ids' in self.place.__dict__)
 
     def test_is_subclass_Place(self):
         """test if Place is subclass of Basemodel"""
