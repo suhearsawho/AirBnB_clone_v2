@@ -12,7 +12,6 @@ from models.engine.db_storage import DBStorage
 from os import environ
 
 
-
 class TestDBStorage(unittest.TestCase):
     """Tests the DBStorage class"""
 
@@ -48,7 +47,6 @@ class TestDBStorage(unittest.TestCase):
         del environ['HBNB_MYSQL_HOST']
         del environ['HBNB_MYSQL_DB']
         del environ['HBNB_TYPE_STORAGE']
-            
 
     def test_all(self):
         """ Tests db_storage all method to query objects in the database
@@ -84,8 +82,6 @@ class TestDBStorage(unittest.TestCase):
         self.storage.delete(self.user)
         self.assertTrue(original_len == new_len)
 
-
     """def test_reload(self):
-    Should we do this? 
-
+    Should we do this?
     Also I think we should delete the commits on both new and delete """

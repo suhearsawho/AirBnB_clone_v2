@@ -207,6 +207,5 @@ class TestFileStorage(unittest.TestCase):
             self.assertEqual(expected[i], actual)
             self.assertEqual(float, type(actual))
 
-
 if __name__ == "__main__":
     unittest.main()

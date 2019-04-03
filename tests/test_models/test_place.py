@@ -92,6 +92,20 @@ class TestPlace(unittest.TestCase):
         """test if dictionary works"""
         self.assertEqual('to_dict' in dir(self.place), True)
 
+    @unittest.skipIf('HBNB_TYPE_STORAGE' in os.environ and
+                     os.environ['HBNB_TYPE_STORAGE'] == 'db',
+                     'getter attribute will overwrite sqlalchemy protocols')
+    def test_place_review_getter(self):
+        """Tests the reviews getter attribute when file storage is used"""
+        from models import storage
+        from models import Review
+        reviews = storage.all(Review)
+        actual = [reviews for review in reviews
+                  if review.place_id == self.place.id]
+        expected = self.place.reviews
+        self.assertEqual(expected, actual)
+        self.assertEqual(list, type(actual))
+
 
 if __name__ == "__main__":
     unittest.main()

@@ -168,14 +168,20 @@ class HBNBCommand(cmd.Cmd):
         """
         if 'HBNB_TYPE_STORAGE' in environ and\
                 environ['HBNB_TYPE_STORAGE'] == 'db':
+            objects = None
             if line:
                 types = {'User': User, 'State': State, 'City': City,
                          'Amenity': Amenity, 'Place': Place, 'Review': Review}
-                objects = models.storage.all(types[line])
+                if line in types.keys():
+                    objects = models.storage.all(types[line])
+                else:
+                    print("** class doesn't exist **")
             else:
                 objects = models.storage.all()
-            my_list = [objects[key] for key in objects]
-            print(my_list)
+
+            if objects is not None:
+                my_list = [objects[key] for key in objects]
+                print(my_list)
 
         else:
             objects = storage.all()
