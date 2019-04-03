@@ -3,6 +3,10 @@
 import unittest
 import os
 from models.place import Place
+from models.city import City
+from models.state import State
+from models.amenity import Amenity
+from models.user import User
 from models.base_model import BaseModel
 import pep8
 
@@ -13,23 +17,40 @@ class TestPlace(unittest.TestCase):
     @classmethod
     def setUpClass(cls):
         """set up for test"""
-        cls.place = Place()
-        cls.place.city_id = "1234-abcd"
-        cls.place.user_id = "4321-dcba"
-        cls.place.name = "Death Star"
-        cls.place.description = "UNLIMITED POWER!!!!!"
-        cls.place.number_rooms = 1000000
-        cls.place.number_bathrooms = 1
-        cls.place.max_guest = 607360
-        cls.place.price_by_night = 10
-        cls.place.latitude = 160.0
-        cls.place.longitude = 120.0
-        cls.place.amenity_ids = ["1324-lksdjkl"]
+        from models import storage
+
+        cls.state = State(name="California")
+        cls.city = City(name="Los Angeles", state_id=cls.state.id)
+        cls.user = User(email="john@snow.com", password="johnpwd")
+        cls.amenity = Amenity(name="Television")
+        cls.place = Place(city_id=cls.city.id, state_id=cls.state.id,
+                          name='Death Star', user_id=cls.user.id,
+                          description='Unlimited power', number_rooms=12,
+                          number_bathrooms=12, max_guest=12, price_by_night=12,
+                          latitude=10.0, longitude=12.0,
+                          )
+
+        print(os.environ['HBNB_TYPE_STORAGE'])
+        if ('HBNB_TYPE_STORAGE' in os.environ and
+                os.environ['HBNB_TYPE_STORAGE'] == 'db'):
+            cls.place.amenities.append(cls.amenity)
+        else:
+            cls.place.amenities = cls.amenity
+
+        storage.new(cls.state)
+        storage.new(cls.city)
+        storage.new(cls.user)
+        storage.new(cls.amenity)
+        storage.new(cls.place)
 
     @classmethod
     def teardown(cls):
         """at the end of the test this will tear it down"""
         del cls.place
+        del cls.city
+        del cls.amenity
+        del cls.state
+        del cls.user
 
     def tearDown(self):
         """teardown"""
@@ -63,7 +84,6 @@ class TestPlace(unittest.TestCase):
         self.assertTrue('price_by_night' in self.place.__dict__)
         self.assertTrue('latitude' in self.place.__dict__)
         self.assertTrue('longitude' in self.place.__dict__)
-        self.assertTrue('amenity_ids' in self.place.__dict__)
 
     def test_is_subclass_Place(self):
         """test if Place is subclass of Basemodel"""

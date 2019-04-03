@@ -60,6 +60,9 @@ class TestFileStorage(unittest.TestCase):
         p = style.check_files(['models/engine/file_storage.py'])
         self.assertEqual(p.total_errors, 0, "fix pep8")
 
+    @unittest.skipIf('HBNB_TYPE_STORAGE' in os.environ and
+                     os.environ['HBNB_TYPE_STORAGE'] == 'db', 'These tests\
+                     are valid for file storage class only')
     def test_all(self):
         """tests if all works in File Storage"""
         storage = FileStorage()
@@ -68,6 +71,9 @@ class TestFileStorage(unittest.TestCase):
         self.assertEqual(type(obj), dict)
         self.assertIs(obj, storage._FileStorage__objects)
 
+    @unittest.skipIf('HBNB_TYPE_STORAGE' in os.environ and
+                     os.environ['HBNB_TYPE_STORAGE'] == 'db', 'These tests\
+                     are valid for file storage class only')
     def test_all_class(self):
         """tests if all will return specified class objects in File Storage"""
         storage = FileStorage()
@@ -77,12 +83,18 @@ class TestFileStorage(unittest.TestCase):
         self.assertIsNot(obj, {})
         self.assertIsNot(obj, storage._FileStorage__objects)
 
+    @unittest.skipIf('HBNB_TYPE_STORAGE' in os.environ and
+                     os.environ['HBNB_TYPE_STORAGE'] == 'db', 'These tests\
+                     are valid for file storage class only')
     def test_all_unknown_class(self):
         """ tests for invalid classes when calling all """
         storage = FileStorage()
         with self.assertRaises(NameError):
             storage.all(dog)
 
+    @unittest.skipIf('HBNB_TYPE_STORAGE' in os.environ and
+                     os.environ['HBNB_TYPE_STORAGE'] == 'db', 'These tests\
+                     are valid for file storage class only')
     def test_new(self):
         """test when new is created"""
         storage = FileStorage()
@@ -94,6 +106,9 @@ class TestFileStorage(unittest.TestCase):
         key = user.__class__.__name__ + "." + str(user.id)
         self.assertIsNotNone(obj[key])
 
+    @unittest.skipIf('HBNB_TYPE_STORAGE' in os.environ and
+                     os.environ['HBNB_TYPE_STORAGE'] == 'db', 'These tests\
+                     are valid for file storage class only')
     def test_delete(self):
         """ Tests delete method to delete objects in __object """
         storage = FileStorage()
@@ -105,6 +120,9 @@ class TestFileStorage(unittest.TestCase):
         key = usr.__class__.__name__ + "." + str(usr.id)
         self.assertFalse(key in obj_dict.keys())
 
+    @unittest.skipIf('HBNB_TYPE_STORAGE' in os.environ and
+                     os.environ['HBNB_TYPE_STORAGE'] == 'db', 'These tests\
+                     are valid for file storage class only')
     def test_reload_filestorage(self):
         """
         tests reload
@@ -133,6 +151,9 @@ class TestFileStorage(unittest.TestCase):
                 self.assertEqual(line, "{}")
         self.assertIs(self.storage.reload(), None)
 
+    @unittest.skipIf('HBNB_TYPE_STORAGE' in os.environ and
+                     os.environ['HBNB_TYPE_STORAGE'] == 'db', 'These tests\
+                     are valid for file storage class only')
     def test_create_valid_str(self):
         """Tests do_create method in console when given valid str input"""
         storage = FileStorage()
@@ -149,6 +170,9 @@ class TestFileStorage(unittest.TestCase):
             self.assertEqual(expected[i], actual)
             self.assertEqual(str, type(actual))
 
+    @unittest.skipIf('HBNB_TYPE_STORAGE' in os.environ and
+                     os.environ['HBNB_TYPE_STORAGE'] == 'db', 'These tests\
+                     are valid for file storage class only')
     def test_create_invalid_str(self):
         """Tests that variable is not created when given invalid str input"""
         storage = FileStorage()
@@ -162,6 +186,9 @@ class TestFileStorage(unittest.TestCase):
             attributes = list(storage.all().values())
             self.assertFalse('test_var' in attributes[0].to_dict())
 
+    @unittest.skipIf('HBNB_TYPE_STORAGE' in os.environ and
+                     os.environ['HBNB_TYPE_STORAGE'] == 'db', 'These tests\
+                     are valid for file storage class only')
     def test_create_valid_int(self):
         """Tests do_create method in console when given valid integer input"""
         storage = FileStorage()
@@ -178,6 +205,9 @@ class TestFileStorage(unittest.TestCase):
             self.assertEqual(expected[i], actual)
             self.assertEqual(int, type(actual))
 
+    @unittest.skipIf('HBNB_TYPE_STORAGE' in os.environ and
+                     os.environ['HBNB_TYPE_STORAGE'] == 'db', 'These tests\
+                     are valid for file storage class only')
     def test_create_invalid_int(self):
         """Tests do_create method in console when given invalid integers"""
         storage = FileStorage()
@@ -191,6 +221,9 @@ class TestFileStorage(unittest.TestCase):
             attributes = list(storage.all().values())
             self.assertFalse('test_var' in attributes[0].to_dict())
 
+    @unittest.skipIf('HBNB_TYPE_STORAGE' in os.environ and
+                     os.environ['HBNB_TYPE_STORAGE'] == 'db', 'These tests\
+                     are valid for file storage class only')
     def test_create_valid_float(self):
         """Tests do_create method in console when given valid float values"""
         storage = FileStorage()
@@ -206,6 +239,7 @@ class TestFileStorage(unittest.TestCase):
             actual = attributes[0].test_var
             self.assertEqual(expected[i], actual)
             self.assertEqual(float, type(actual))
+
 
 if __name__ == "__main__":
     unittest.main()

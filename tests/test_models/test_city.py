@@ -3,6 +3,7 @@
 import unittest
 import os
 from models.city import City
+from models.state import State
 from models.base_model import BaseModel
 import pep8
 
@@ -13,9 +14,8 @@ class TestCity(unittest.TestCase):
     @classmethod
     def setUpClass(cls):
         """set up for test"""
-        cls.city = City()
-        cls.city.name = "LA"
-        cls.city.state_id = "CA"
+        cls.state = State(name="California")
+        cls.city = City(name="LA", state_id=cls.state.id)
 
     @classmethod
     def teardown(cls):
@@ -58,6 +58,9 @@ class TestCity(unittest.TestCase):
 
     def test_save_City(self):
         """test if the save works"""
+        from models import storage
+        storage.new(self.state)
+        storage.new(self.city)
         self.city.save()
         self.assertNotEqual(self.city.created_at, self.city.updated_at)
 
