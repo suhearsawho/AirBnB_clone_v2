@@ -17,10 +17,9 @@ def do_deploy(archive_path):
         put(archive_path, '/tmp/')
         # Uncompress the archive to the folder
         run('mkdir -p {}'.format(path))
-        with cd('/tmp/'):
-            run('tar -xzf /tmp/{} -C {}'.
-                format(archive_path[9:], path))
-            run('rm /tmp/{}'.format(archive_path[9:]))
+        run('tar -xzf /tmp/{} -C {}'.
+            format(archive_path[9:], path))
+        run('rm /tmp/{}'.format(archive_path[9:]))
         run('mv {}web_static/* {}'.format(path, path))
         run('rm -rf {}web_static'.format(path))
         run('rm -rf /data/web_static/current')
