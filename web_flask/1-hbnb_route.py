@@ -1,7 +1,7 @@
 #!/usr/bin/python3
-"""This script runs a Flask application"""
-
+"""Starts a flask web application"""
 from flask import Flask
+
 app = Flask(__name__)
 
 
@@ -9,6 +9,12 @@ app = Flask(__name__)
 def index():
     """Defines the index page"""
     return 'Hello HBNB!'
+
+
+@app.route('/hbnb', strict_slashes=False)
+def hbnb():
+    """Defines the hbnb page"""
+    return 'HBNB'
 
 
 if __name__ == '__main__':
