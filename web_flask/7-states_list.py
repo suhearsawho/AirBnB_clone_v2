@@ -14,6 +14,11 @@ def create_app():
         state_obj = storage.all('State')
         return render_template('7-states_list.html', state_obj=state_obj)
 
+    @app.teardown_appcontext
+    def teardown(app):
+        """Teardown context"""
+        storage.close()
+
     return app
 
 
