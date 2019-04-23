@@ -29,6 +29,11 @@ class FileStorage:
         if cls is None:
             return self.__objects
         else:
+            if type(cls) is str:
+                types = {'BaseModel': BaseModel, 'User': User, 'State': State,
+                         'City': City, 'Amenity': Amenity, 'Place': Place,
+                         'Review': Review}
+                cls = types[cls]
             new_dict = {}
             for k, v in self.__objects.items():
                 if type(v) == cls:
@@ -75,6 +80,6 @@ class FileStorage:
             except:
                 pass
 
-    def close(self):
-        """Calls reload method"""
-        self.reload()
+#    def close(self):
+#       """Calls reload method"""
+#       self.reload()
