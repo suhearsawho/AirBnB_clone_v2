@@ -31,7 +31,7 @@ def create_app(test_config=None):
     @app.route('/number/<int:n>', strict_slashes=False)
     def number(n):
         """number page"""
-        return str(n)
+        return str(n) + ' is a number'
 
     return app
 
