@@ -48,6 +48,11 @@ class DBStorage():
                     key = obj.__class__.__name__ + '.' + obj.id
                     object_dict[key] = obj
         else:
+            if type(cls) is str:
+                cls_types = {'User': User, 'State': State, 'City': City,
+                             'Amenity': Amenity, 'Place': Place,
+                             'Review': Review}
+                cls = cls_types[cls]
             for obj in self.__session.query(cls).all():
                 key = obj.__class__.__name__ + '.' + obj.id
                 object_dict[key] = obj
@@ -76,3 +81,8 @@ class DBStorage():
             bind=self.__engine, expire_on_commit=False, autoflush=False)
         Session = scoped_session(session_factory)
         self.__session = Session()
+
+    def close(self):
+        """Closes down session of sqlalchemy"""
+        if self.__session:
+            self.__session.close()

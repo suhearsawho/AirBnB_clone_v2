@@ -33,8 +33,8 @@ class FileStorage:
             for k, v in self.__objects.items():
                 if type(v) == cls:
                     new_dict[k] = v
-            instance_list = [instance for instance in new_dict.values()]
-            return instance_list
+            # instance_list = [instance for instance in new_dict.values()]
+            return new_dict
 
     def new(self, obj):
         """sets __object to given obj
@@ -75,4 +75,5 @@ class FileStorage:
             except:
                 pass
 
-    """ should i save the new updated objects? """
+    def close(self):
+        self.reload()
