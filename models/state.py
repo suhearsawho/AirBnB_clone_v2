@@ -28,8 +28,9 @@ class State(BaseModel, Base):
         @property
         def cities(self):
             """Returns the list of City instances with equal state_id"""
-            from models import storage
-            cities = storage.all(City)
-            self.__cities = [city for city in cities.values()
-                             if city.state_id == self.id]
-            return self.__cities
+            pass
+#            from models import storage
+#           cities = storage.all(City)
+#           self.__cities = [city for city in cities.values()
+#                            if city.state_id == self.id]
+#           return self.__cities
