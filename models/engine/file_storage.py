@@ -80,6 +80,6 @@ class FileStorage:
             except:
                 pass
 
-#    def close(self):
-#       """Calls reload method"""
-#       self.reload()
+    def close(self):
+        """Calls reload method"""
+        self.reload()

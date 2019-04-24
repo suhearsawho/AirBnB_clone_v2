@@ -30,6 +30,6 @@ class State(BaseModel, Base):
             """Returns the list of City instances with equal state_id"""
             from models import storage
             cities = storage.all(City)
-            self.__cities = [city for city in cities.values()
+            all_cities = [city for city in cities.values()
                              if city.state_id == self.id]
-            return self.__cities
+            return all_cities
