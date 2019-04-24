@@ -31,5 +31,5 @@ class State(BaseModel, Base):
             from models import storage
             cities = storage.all(City)
             all_cities = [city for city in cities.values()
-                             if city.state_id == self.id]
+                          if city.state_id == self.id]
             return all_cities
