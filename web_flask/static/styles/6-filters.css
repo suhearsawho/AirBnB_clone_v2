@@ -26,8 +26,8 @@ button:hover {
 }
 .filters h2 {
     margin-left: 15%;
-    margin-top: 0;
-    margin-bottom: 0;
+    margin-top: 4%;
+    margin-bottom: 4%;
     font-weight: 600;
 }
 .filters h3 {
@@ -52,6 +52,7 @@ button:hover {
 }
 .popover {
     overflow: scroll;
+    height: 100%;
     max-height: 300px;
     visibility: hidden;
     width: 100%;
@@ -74,4 +75,8 @@ button:hover {
 .amenities:hover .popover,
 .locations:hover .popover {
     visibility: visible;
+}
+
+.filter-items li {
+    margin-top: 4%;
 }
